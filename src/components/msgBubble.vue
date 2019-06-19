@@ -37,6 +37,8 @@ export default {
 .rightSide {
   background-color: #cfd8dc;
   border-radius: 0.5rem 0 0.5rem 0.5rem;
+
+  align-self: flex-end;
 }
 </style>
 
