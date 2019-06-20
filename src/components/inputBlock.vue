@@ -94,6 +94,14 @@ export default {
   outline: none;
   resize: none;
   overflow: hidden;
+
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#msgInput::-webkit-input-placeholder {
+  color: #C2C5CC;
 }
 
 #iconBlock {

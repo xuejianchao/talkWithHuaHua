@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <header id="header">
+      华华
+    </header>
     <div id="msgBoard">
       <msgBlock class="msgBlock"
         v-for="msg in messages"
@@ -7,8 +10,9 @@
         v-bind:key="msg.id">
       </msgBlock>
     </div>
-
-    <inputBlock v-on:appendMsgToMsgBoard="appendMsgToMsgBoard"></inputBlock>
+    <div id="inputBlock">
+      <inputBlock v-on:appendMsgToMsgBoard="appendMsgToMsgBoard"></inputBlock>
+    </div>
   </div>
 </template>
 
@@ -34,6 +38,16 @@ export default {
         },
         {
           id: "3",
+          whichSide: "right",
+          msgContent: "haoba"
+        },
+        {
+          id: "4",
+          whichSide: "left",
+          msgContent: "你说的有道理，可是这和我有什么关系呢？"
+        },
+        {
+          id: "5",
           whichSide: "right",
           msgContent: "haoba"
         }
@@ -70,16 +84,47 @@ body {
 
 #app {
   color: #2c3e50;
+  background-color: #eceff1;
 
   width: 60%;
+  height: 100vh;
+
+  box-sizing: border-box;
+  position: relative;
+  padding-top: 40px;
   margin: auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#header {
+  line-height: 40px;
+  height: 40px;
+  text-align: center;
+
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16);
+
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 
 #msgBoard {
   padding: 16px;
-  background-color: #eceff1;
 
   display: flex;
   flex-direction: column;
+
+  flex-shrink: 1;
+  overflow: auto;
+}
+
+#inputBlock {
+  flex-shrink: 0;
+  max-height: 90vh;
+  overflow: auto;
 }
 </style>
