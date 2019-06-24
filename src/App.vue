@@ -48,7 +48,7 @@
         <div id="graphBlock">
           <div id="typeBlock">
             <h2>分类分析结果</h2>
-            <ringGraph v-bind:types="returnJSONs[activeJSONIndex].types"></ringGraph>
+            <multBarGraph v-bind:types="returnJSONs[activeJSONIndex].types"></multBarGraph>
           </div>
           <div id="sentimentBlock">
             <h2>情感分析结果</h2>
@@ -65,7 +65,7 @@
 import msgBlock from "./components/msgBlock.vue";
 import inputBlock from "./components/inputBlock.vue";
 import msgBubble from "./components/msgBubble.vue";
-import ringGraph from "./components/ringGraph.vue";
+import multBarGraph from "./components/multBarGraph.vue";
 import barGraph from "./components/barGraph.vue";
 
 export default {
@@ -106,63 +106,99 @@ export default {
           message: "浔阳江头夜送客",
           reply: "枫叶荻花秋瑟瑟",
           sentiment: 0.5,
-          types: { 其他: 0.25, 美食: 0.25, 宠物: 0.5 }
+          types: [
+            { type: "其他", value: "0.2" },
+            { type: "体育", value: "0.2" },
+            { type: "军事", value: "0.2" }
+          ]
         },
         {
           id: 2,
           message: "主人下马客在船",
           reply: "举酒欲饮无管弦",
           sentiment: 0.85,
-          types: { 其他: 0.3, 体育: 0.3, 军事: 0.4 }
+          types: [
+            { type: "其他", value: "0.1" },
+            { type: "体育", value: "0.2" },
+            { type: "军事", value: "0.3" }
+          ]
         },
         {
           id: 3,
           message: "醉不成欢惨将别",
           reply: "别时茫茫江浸月",
           sentiment: 0.45,
-          types: { 其他: 0.4, 体育: 0.2, 军事: 0.4 }
+          types: [
+            { type: "其他", value: "0.2" },
+            { type: "体育", value: "0.2" },
+            { type: "军事", value: "0.4" }
+          ]
         },
         {
           id: 4,
           message: "浔阳江头夜送客",
           reply: "枫叶荻花秋瑟瑟",
           sentiment: 0.5,
-          types: { 其他: 0.25, 美食: 0.25, 宠物: 0.5 }
+          types: [
+            { type: "其他", value: "0.02" },
+            { type: "体育", value: "0.5" },
+            { type: "军事", value: "0.2" }
+          ]
         },
         {
           id: 5,
           message: "主人下马客在船",
           reply: "举酒欲饮无管弦",
           sentiment: 0.85,
-          types: { 其他: 0.3, 体育: 0.3, 军事: 0.4 }
+          types: [
+            { type: "其他", value: "0.01" },
+            { type: "体育", value: "0.8" },
+            { type: "军事", value: "0.01" }
+          ]
         },
         {
           id: 6,
           message: "醉不成欢惨将别",
           reply: "别时茫茫江浸月",
           sentiment: 0.45,
-          types: { 其他: 0.4, 体育: 0.2, 军事: 0.4 }
+          types: [
+            { type: "其他", value: "0.2" },
+            { type: "体育", value: "0.2" },
+            { type: "军事", value: "0.2" }
+          ]
         },
         {
           id: 7,
           message: "浔阳江头夜送客",
           reply: "枫叶荻花秋瑟瑟",
           sentiment: 0.5,
-          types: { 其他: 0.25, 美食: 0.25, 宠物: 0.5 }
+          types: [
+            { type: "其他", value: "0.2" },
+            { type: "体育", value: "0.2" },
+            { type: "军事", value: "0.2" }
+          ]
         },
         {
           id: 8,
           message: "主人下马客在船",
           reply: "举酒欲饮无管弦",
           sentiment: 0.85,
-          types: { 其他: 0.3, 体育: 0.3, 军事: 0.4 }
+          types: [
+            { type: "其他", value: "0.2" },
+            { type: "体育", value: "0.2" },
+            { type: "军事", value: "0.2" }
+          ]
         },
         {
           id: 9,
           message: "醉不成欢惨将别",
           reply: "别时茫茫江浸月",
           sentiment: 0.45,
-          types: { 其他: 0.4, 体育: 0.2, 军事: 0.4 }
+          types: [
+            { type: "其他", value: "0.2" },
+            { type: "体育", value: "0.2" },
+            { type: "军事", value: "0.2" }
+          ]
         },
         {
           id: 10,
@@ -170,7 +206,11 @@ export default {
             "《琵琶行》是唐朝诗人白居易的长篇乐府诗之一。作于元和十一年（816年）。此诗通过对琵琶女高超弹奏技艺和她不幸经历的描述，揭露了封建社会官僚腐败、民生凋敝、人才埋没等不合理现象，表达了诗人对她的深切同情，也抒发了诗人对自己无辜被贬的愤懑之情",
           reply: "播放琵琶行",
           sentiment: 0.45,
-          types: { 其他: 0.4, 体育: 0.2, 军事: 0.4 }
+          types: [
+            { type: "其他", value: "0.2" },
+            { type: "体育", value: "0.2" },
+            { type: "军事", value: "0.2" }
+          ]
         }
       ],
       activeJSONIndex: 2,
@@ -181,7 +221,7 @@ export default {
     msgBlock,
     msgBubble,
     inputBlock,
-    ringGraph,
+    multBarGraph,
     barGraph
   },
   methods: {
@@ -318,6 +358,8 @@ body {
   flex-shrink: 0;
   max-height: 90vh;
   overflow: auto;
+
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.16);
 }
 
 #analyzePage {
