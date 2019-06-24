@@ -42,17 +42,22 @@
       <section id="analyzeResults">
         <div id="replyBlock">
           <h2>华华回复</h2>
-          <msgBubble v-bind:content="returnJSONs[activeJSONIndex].reply"
+          <msgBubble v-bind:content="replyFromHuaHua"
             which-side="left"></msgBubble>
         </div>
         <div id="graphBlock">
           <div id="typeBlock">
             <h2>分类分析结果</h2>
-            <multBarGraph v-bind:types="returnJSONs[activeJSONIndex].types"></multBarGraph>
+            <multBarGraph v-if="returnJSONs[activeJSONIndex]"
+              v-bind:types="returnJSONs[activeJSONIndex].types"></multBarGraph>
+            <p v-else>请选中一条消息</p>
           </div>
           <div id="sentimentBlock">
             <h2>情感分析结果</h2>
-            <barGraph v-bind:sentiment="returnJSONs[activeJSONIndex].sentiment"></barGraph>
+            <barGraph v-if="returnJSONs[activeJSONIndex]"
+              v-bind:sentiment="returnJSONs[activeJSONIndex].sentiment"></barGraph>
+            <p v-else>请选中一条消息</p>
+
           </div>
         </div>
       </section>
@@ -72,148 +77,10 @@ export default {
   name: "app",
   data: function() {
     return {
-      messages: [
-        {
-          id: "1",
-          whichSide: "right",
-          msgContent:
-            "照道理说，他也不能回到故国去，或许已经死在半路上了吧？可能再也不会听到关于那家伙的事情了。"
-        },
-        {
-          id: "2",
-          whichSide: "left",
-          msgContent: "你说的有道理，可是这和我有什么关系呢？"
-        },
-        {
-          id: "3",
-          whichSide: "right",
-          msgContent: "haoba"
-        },
-        {
-          id: "4",
-          whichSide: "left",
-          msgContent: "你说的有道理，可是这和我有什么关系呢？"
-        },
-        {
-          id: "5",
-          whichSide: "right",
-          msgContent: "haoba"
-        }
-      ],
-      returnJSONs: [
-        {
-          id: 1,
-          message: "浔阳江头夜送客",
-          reply: "枫叶荻花秋瑟瑟",
-          sentiment: 0.5,
-          types: [
-            { type: "其他", value: "0.2" },
-            { type: "体育", value: "0.2" },
-            { type: "军事", value: "0.2" }
-          ]
-        },
-        {
-          id: 2,
-          message: "主人下马客在船",
-          reply: "举酒欲饮无管弦",
-          sentiment: 0.85,
-          types: [
-            { type: "其他", value: "0.1" },
-            { type: "体育", value: "0.2" },
-            { type: "军事", value: "0.3" }
-          ]
-        },
-        {
-          id: 3,
-          message: "醉不成欢惨将别",
-          reply: "别时茫茫江浸月",
-          sentiment: 0.45,
-          types: [
-            { type: "其他", value: "0.2" },
-            { type: "体育", value: "0.2" },
-            { type: "军事", value: "0.4" }
-          ]
-        },
-        {
-          id: 4,
-          message: "浔阳江头夜送客",
-          reply: "枫叶荻花秋瑟瑟",
-          sentiment: 0.5,
-          types: [
-            { type: "其他", value: "0.02" },
-            { type: "体育", value: "0.5" },
-            { type: "军事", value: "0.2" }
-          ]
-        },
-        {
-          id: 5,
-          message: "主人下马客在船",
-          reply: "举酒欲饮无管弦",
-          sentiment: 0.85,
-          types: [
-            { type: "其他", value: "0.01" },
-            { type: "体育", value: "0.8" },
-            { type: "军事", value: "0.01" }
-          ]
-        },
-        {
-          id: 6,
-          message: "醉不成欢惨将别",
-          reply: "别时茫茫江浸月",
-          sentiment: 0.45,
-          types: [
-            { type: "其他", value: "0.2" },
-            { type: "体育", value: "0.2" },
-            { type: "军事", value: "0.2" }
-          ]
-        },
-        {
-          id: 7,
-          message: "浔阳江头夜送客",
-          reply: "枫叶荻花秋瑟瑟",
-          sentiment: 0.5,
-          types: [
-            { type: "其他", value: "0.2" },
-            { type: "体育", value: "0.2" },
-            { type: "军事", value: "0.2" }
-          ]
-        },
-        {
-          id: 8,
-          message: "主人下马客在船",
-          reply: "举酒欲饮无管弦",
-          sentiment: 0.85,
-          types: [
-            { type: "其他", value: "0.2" },
-            { type: "体育", value: "0.2" },
-            { type: "军事", value: "0.2" }
-          ]
-        },
-        {
-          id: 9,
-          message: "醉不成欢惨将别",
-          reply: "别时茫茫江浸月",
-          sentiment: 0.45,
-          types: [
-            { type: "其他", value: "0.2" },
-            { type: "体育", value: "0.2" },
-            { type: "军事", value: "0.2" }
-          ]
-        },
-        {
-          id: 10,
-          message:
-            "《琵琶行》是唐朝诗人白居易的长篇乐府诗之一。作于元和十一年（816年）。此诗通过对琵琶女高超弹奏技艺和她不幸经历的描述，揭露了封建社会官僚腐败、民生凋敝、人才埋没等不合理现象，表达了诗人对她的深切同情，也抒发了诗人对自己无辜被贬的愤懑之情",
-          reply: "播放琵琶行",
-          sentiment: 0.45,
-          types: [
-            { type: "其他", value: "0.2" },
-            { type: "体育", value: "0.2" },
-            { type: "军事", value: "0.2" }
-          ]
-        }
-      ],
-      activeJSONIndex: 2,
+      nextMsgID: 1,
+      messages: [],
+      returnJSONs: [],
+      activeJSONIndex: -1,
       onWhichPage: "left"
     };
   },
@@ -226,8 +93,9 @@ export default {
   },
   methods: {
     appendMsgToMsgBoard: function(halfDoneMsgObj) {
-      let lastId = this.messages[this.messages.length - 1].id;
-      halfDoneMsgObj.id = lastId + 1;
+      let IDOfThisMsg = this.nextMsgID;
+      halfDoneMsgObj.id = IDOfThisMsg + "_r";
+      this.nextMsgID++;
 
       this.messages.push(halfDoneMsgObj);
 
@@ -242,13 +110,13 @@ export default {
           let returnMsg = {
             whichSide: "left",
             msgContent: "reply",
-            id: lastId + 2
+            id: IDOfThisMsg + "_l"
           };
           this.messages.push(returnMsg);
         }
       };
 
-      xmlhttp.open("POST", "localhost:8080/", true);
+      xmlhttp.open("POST", "localhost:5000/", true);
       xmlhttp.send(halfDoneMsgObj.msgContent);
     },
     setThisMsgActive: function(id) {
@@ -266,6 +134,11 @@ export default {
       return {
         atRightPage: this.onWhichPage === "right"
       };
+    },
+    replyFromHuaHua: function() {
+      return this.returnJSONs[this.activeJSONIndex]
+        ? this.returnJSONs[this.activeJSONIndex].reply
+        : "请选中一条消息";
     }
   }
 };
