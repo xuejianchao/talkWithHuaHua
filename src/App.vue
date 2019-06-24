@@ -1,11 +1,13 @@
 <template>
   <div id="wrapperForTwoPages"
-    class="atRightPage">
+    v-bind:class="wrapperForTwoPagesClassObj">
     <section id="chatPage"
       class="page">
       <section id="chatWindow">
         <header id="header">
           华华
+          <i id="toAnalyzePage"
+            v-on:click="toRightPage"></i>
         </header>
         <div id="msgBoard">
           <msgBlock class="msgBlock"
@@ -22,7 +24,13 @@
 
     <section id="analyzePage"
       class="page">
+
       <section id="msgList">
+        <h2>
+          <i id="toChatPage"
+            v-on:click="toLeftPage"></i>
+          发送的消息
+        </h2>
         <div v-for="json in returnJSONs"
           v-bind:key="json.id"
           v-on:click="setThisMsgActive(json.id)">
@@ -30,13 +38,22 @@
             which-side="right"></msgBubble>
         </div>
       </section>
+
       <section id="analyzeResults">
-        <div id="replyBlock">{{returnJSONs[activeJSONIndex].reply}}</div>
-        <div id="typeBlock">
-          <ringGraph v-bind:types="returnJSONs[activeJSONIndex].types"></ringGraph>
+        <div id="replyBlock">
+          <h2>华华回复</h2>
+          <msgBubble v-bind:content="returnJSONs[activeJSONIndex].reply"
+            which-side="left"></msgBubble>
         </div>
-        <div id="sentimentBlock">
-          <barGraph v-bind:sentiment="returnJSONs[activeJSONIndex].sentiment"></barGraph>
+        <div id="graphBlock">
+          <div id="typeBlock">
+            <h2>分类分析结果</h2>
+            <ringGraph v-bind:types="returnJSONs[activeJSONIndex].types"></ringGraph>
+          </div>
+          <div id="sentimentBlock">
+            <h2>情感分析结果</h2>
+            <barGraph v-bind:sentiment="returnJSONs[activeJSONIndex].sentiment"></barGraph>
+          </div>
         </div>
       </section>
     </section>
@@ -107,6 +124,48 @@ export default {
         },
         {
           id: 4,
+          message: "浔阳江头夜送客",
+          reply: "枫叶荻花秋瑟瑟",
+          sentiment: 0.5,
+          types: { 其他: 0.25, 美食: 0.25, 宠物: 0.5 }
+        },
+        {
+          id: 5,
+          message: "主人下马客在船",
+          reply: "举酒欲饮无管弦",
+          sentiment: 0.85,
+          types: { 其他: 0.3, 体育: 0.3, 军事: 0.4 }
+        },
+        {
+          id: 6,
+          message: "醉不成欢惨将别",
+          reply: "别时茫茫江浸月",
+          sentiment: 0.45,
+          types: { 其他: 0.4, 体育: 0.2, 军事: 0.4 }
+        },
+        {
+          id: 7,
+          message: "浔阳江头夜送客",
+          reply: "枫叶荻花秋瑟瑟",
+          sentiment: 0.5,
+          types: { 其他: 0.25, 美食: 0.25, 宠物: 0.5 }
+        },
+        {
+          id: 8,
+          message: "主人下马客在船",
+          reply: "举酒欲饮无管弦",
+          sentiment: 0.85,
+          types: { 其他: 0.3, 体育: 0.3, 军事: 0.4 }
+        },
+        {
+          id: 9,
+          message: "醉不成欢惨将别",
+          reply: "别时茫茫江浸月",
+          sentiment: 0.45,
+          types: { 其他: 0.4, 体育: 0.2, 军事: 0.4 }
+        },
+        {
+          id: 10,
           message:
             "《琵琶行》是唐朝诗人白居易的长篇乐府诗之一。作于元和十一年（816年）。此诗通过对琵琶女高超弹奏技艺和她不幸经历的描述，揭露了封建社会官僚腐败、民生凋敝、人才埋没等不合理现象，表达了诗人对她的深切同情，也抒发了诗人对自己无辜被贬的愤懑之情",
           reply: "播放琵琶行",
@@ -114,7 +173,8 @@ export default {
           types: { 其他: 0.4, 体育: 0.2, 军事: 0.4 }
         }
       ],
-      activeJSONIndex: 2
+      activeJSONIndex: 2,
+      onWhichPage: "left"
     };
   },
   components: {
@@ -132,9 +192,40 @@ export default {
       this.messages.push(halfDoneMsgObj);
 
       // 向后端发送消息
+      var xmlhttp = new XMLHttpRequest();
+
+      xmlhttp.onreadystatuschange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          let returnJSON = JSON.parse(xmlhttp.responseText);
+          this.returnJSONs.push(returnJSON);
+
+          let returnMsg = {
+            whichSide: "left",
+            msgContent: "reply",
+            id: lastId + 2
+          };
+          this.messages.push(returnMsg);
+        }
+      };
+
+      xmlhttp.open("POST", "localhost:8080/", true);
+      xmlhttp.send(halfDoneMsgObj.msgContent);
     },
     setThisMsgActive: function(id) {
       this.activeJSONIndex = id - 1;
+    },
+    toRightPage: function() {
+      this.onWhichPage = "right";
+    },
+    toLeftPage: function() {
+      this.onWhichPage = "left";
+    }
+  },
+  computed: {
+    wrapperForTwoPagesClassObj: function() {
+      return {
+        atRightPage: this.onWhichPage === "right"
+      };
     }
   }
 };
@@ -152,7 +243,7 @@ body {
 
   overflow-y: hidden;
 
-  background-image: linear-gradient(45deg, red, blue);
+  background-image: linear-gradient(45deg, #58829b, #13528e);
 }
 
 #wrapperForTwoPages {
@@ -170,9 +261,6 @@ body {
 
 .atRightPage {
   transform: translateX(-50%);
-}
-
-#chatPage {
 }
 
 #chatWindow {
@@ -205,6 +293,17 @@ body {
   width: 100%;
 }
 
+#toAnalyzePage {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 40px;
+  height: 40px;
+  background-image: url(./assets/analyze.png);
+  background-repeat: round;
+}
+
 #msgBoard {
   padding: 16px;
 
@@ -229,12 +328,48 @@ body {
 
 #msgList {
   color: #2c3e50;
-  background-color: #eceff1;
+  background-color: #eceff1e5;
 
   width: 40%;
   height: 80vh;
+  box-sizing: border-box;
 
+  padding: 16px;
+  padding-top: 76px;
   overflow: auto;
+  position: relative;
+}
+
+#msgList > div {
+  margin-bottom: 8px;
+}
+
+#msgList > h2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 60px;
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  background-color: #ffffff;
+  font-weight: normal;
+  text-align: center;
+  line-height: 60px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16);
+}
+
+#toChatPage {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+
+  width: 44px;
+  height: 44px;
+  background-image: url(./assets/msg.png);
+  background-repeat: round;
 }
 
 #analyzeResults {
@@ -246,10 +381,39 @@ body {
   justify-content: space-between;
 }
 
-#analyzeResults > div {
+#replyBlock {
   width: 100%;
-  flex-grow: 1;
 
-  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#graphBlock {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+#graphBlock > div {
+  width: 200px;
+  height: 270px;
+}
+
+#analyzeResults h2 {
+  color: #eceff1;
+  font-weight: normal;
+
+  margin: 0;
+  padding: 0;
+  height: 70px;
+
+  text-align: center;
+  line-height: 70px;
+}
+
+#sentimentBlock > h2 {
+  margin-bottom: 75px;
 }
 </style>

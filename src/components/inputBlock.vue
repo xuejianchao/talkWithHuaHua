@@ -15,9 +15,9 @@
     <span id="iconBlock"
       v-on:click="sendAndAppendMsg">
       <img v-if="iconObj.clickable"
-        src="../../assert/plane_blue.png">
+        src="../assets/plane_blue.png">
       <img v-if="iconObj.unclickable"
-        src="../../assert/plane_gray.svg">
+        src="../assets/plane_gray.svg">
     </span>
   </div>
 </template>
@@ -101,7 +101,7 @@ export default {
 }
 
 #msgInput::-webkit-input-placeholder {
-  color: #C2C5CC;
+  color: #c2c5cc;
 }
 
 #iconBlock {
