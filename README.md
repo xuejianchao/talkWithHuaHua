@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # talkwithhuahua
 
 ## Project setup
@@ -27,3 +28,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+=======
+# talkWithHuaHua
+>>>>>>> 0738185c98a508f3d64f2b6effcfa2decc6eef78
