@@ -116,7 +116,7 @@ export default {
         }
       };
 
-      xmlhttp.open("POST", "localhost:5000/", true);
+      xmlhttp.open("POST", "http://127.0.0.1:5000/", true);
       xmlhttp.send(halfDoneMsgObj.msgContent);
     },
     setThisMsgActive: function(id) {
