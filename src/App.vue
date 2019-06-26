@@ -102,19 +102,19 @@ export default {
       // 向后端发送消息
       var xmlhttp = new XMLHttpRequest();
 
-      xmlhttp.onreadystatuschange = function() {
+      xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           let returnJSON = JSON.parse(xmlhttp.responseText);
           this.returnJSONs.push(returnJSON);
 
           let returnMsg = {
             whichSide: "left",
-            msgContent: "reply",
+            msgContent: returnJSON.reply,
             id: IDOfThisMsg + "_l"
           };
           this.messages.push(returnMsg);
         }
-      };
+      }.bind(this);
 
       xmlhttp.open("POST", "http://127.0.0.1:5000/", true);
       xmlhttp.send(halfDoneMsgObj.msgContent);
