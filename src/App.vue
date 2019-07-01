@@ -322,6 +322,16 @@ body {
   height: 270px;
 }
 
+#graphBlock p {
+  color: #ffffff;
+  text-align: center;
+  margin: 0;
+}
+
+#typeBlock > p {
+  margin-top: 75px;
+}
+
 #analyzeResults h2 {
   color: #eceff1;
   font-weight: normal;
