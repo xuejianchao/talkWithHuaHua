@@ -8,7 +8,8 @@
       <textarea id="msgInput"
         placeholder="'你好，华华！'"
         maxlength="1000"
-        v-model="inputMessage">
+        v-model="inputMessage"
+        v-on:keydown.enter.prevent="sendAndAppendMsg">
       </textarea>
     </div>
 
