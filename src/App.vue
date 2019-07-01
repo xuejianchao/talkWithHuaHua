@@ -34,7 +34,8 @@
         <div v-for="json in returnJSONs"
           v-bind:key="json.id"
           v-on:click="setThisMsgActive(json.id)">
-          <msgBubble v-bind:content="json.message"
+          <msgBubble v-bind:style="(json.id - 1 === activeJSONIndex) ? activeBubbleStyleObj: {}"
+            v-bind:content="json.message"
             which-side="right"></msgBubble>
         </div>
       </section>
@@ -130,6 +131,11 @@ export default {
     }
   },
   computed: {
+    activeBubbleStyleObj: function() {
+      return {
+        "background-color": "#54c2f3"
+      };
+    },
     wrapperForTwoPagesClassObj: function() {
       return {
         atRightPage: this.onWhichPage === "right"
